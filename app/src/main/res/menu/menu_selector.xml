@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_ultimo"
-        android:icon="@android:drawable/ic_menu_set_as"
+        android:icon="@android:drawable/ic_menu_recent_history"
         android:orderInCategory="100"
         android:title="Último leido"
         app:showAsAction="ifRoom|withText" />

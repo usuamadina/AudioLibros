@@ -41,6 +41,8 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
         return vista;
     }
 
+
+
     private void ponInfoLibro(int id, View vista) {
         Libro libro = ((Aplicacion) getActivity().getApplication())
                 .getVectorLibros().elementAt(id);
@@ -76,6 +78,7 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
         mediaController.setMediaPlayer(this);
         mediaController.setAnchorView(getView().findViewById(
                 R.id.fragment_detalle));
+        mediaController.setPadding(0,0,0,110);
         mediaController.setEnabled(true);
         mediaController.show();
     }
