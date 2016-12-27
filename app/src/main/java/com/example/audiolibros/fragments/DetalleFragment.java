@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.audiolibros.Aplicacion;
 import com.example.audiolibros.Libro;
+import com.example.audiolibros.MainActivity;
 import com.example.audiolibros.R;
 
 import java.io.IOException;
@@ -86,6 +87,15 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
     public boolean onTouch(View vista, MotionEvent evento) {
         mediaController.show();
         return false;
+    }
+
+    @Override
+    public void onResume() {
+        DetalleFragment detalleFragment = (DetalleFragment) getFragmentManager().findFragmentById(R.id.fragment_detalle);
+        if (detalleFragment == null) {
+            ((MainActivity) getActivity()).mostrarElementos(false);
+        }
+        super.onResume();
     }
 
     @Override

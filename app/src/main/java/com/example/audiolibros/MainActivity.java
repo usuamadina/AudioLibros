@@ -3,6 +3,7 @@ package com.example.audiolibros;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -24,10 +25,21 @@ import android.widget.Toast;
 import com.example.audiolibros.fragments.DetalleFragment;
 import com.example.audiolibros.fragments.SelectorFragment;
 
+import static android.R.id.toggle;
+import static com.example.audiolibros.R.id.appBarLayout;
+import static com.example.audiolibros.R.id.search_edit_frame;
+import static com.example.audiolibros.R.id.tabs;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private AdaptadorLibrosFiltro adaptador;
+
+    //Ocultar elementos interfaz de usuario
+    private AppBarLayout appBarLayout;
+    private TabLayout tabs;
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         //Pestañas
-        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+        tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.addTab(tabs.newTab().setText("Todos"));
         tabs.addTab(tabs.newTab().setText("Nuevos"));
         tabs.addTab(tabs.newTab().setText("Leidos"));
@@ -106,14 +118,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });*/
 
-    // Navigation Drawer
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close);
+        // Navigation Drawer
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Ocultar elementos interfaz usuario
+        appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
+        tabs = (TabLayout) findViewById(R.id.tabs);
+
+
     }
+
 
     public void mostrarDetalle(int id) {
         DetalleFragment detalleFragment = (DetalleFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_detalle);
@@ -203,6 +222,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    public void mostrarElementos(boolean mostrar) {
+        appBarLayout.setExpanded(mostrar);
+        toggle.setDrawerIndicatorEnabled(mostrar);
+        if (mostrar) {
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            tabs.setVisibility(View.VISIBLE);
+        } else {
+            tabs.setVisibility(View.GONE);
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
     }
 }
