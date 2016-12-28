@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.contenedor_pequeno, primerFragment).commit();
         }
-
         //Barra de acciones
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -116,34 +115,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
        /* app.getAdaptador().setOnItemClickListener(new View.OnClickListener(){
             @Override public void onClick(View v){
                 Toast.makeText(MainActivity.this,"Seleccionando el elemento: " + recyclerView.getChildAdapterPosition(v), Toast.LENGTH_SHORT).show();
-            }
+            }ActionBar actionBar = getSupportActionBar(); if (actionBar != null) { actionBar.setDisplayHomeAsUpEnabled(true); }
         });*/
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
 
         // Navigation Drawer
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
-        // Ocultar elementos interfaz usuario
-        appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
-        tabs = (TabLayout) findViewById(R.id.tabs);
-
-        //Crear icono flechita de vuelta atrás al visualizar un fragment
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true); // método que hace que se muestre el icono con la flecha hacia la izquierda
-        }
-
-        // Escuchador para que el botón haga retroceder en la plila de navegación
         toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+        // Ocultar elementos interfaz usuario
+        appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
+        tabs = (TabLayout) findViewById(R.id.tabs);
+
 
     }
 
@@ -248,6 +249,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             tabs.setVisibility(View.GONE);
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
+        /*
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });*/
     }
 }
-
