@@ -31,7 +31,7 @@
         android:text="Autor"
         android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/darker_gray" />
+        android:textColor="@android:color/darker_gray"/>
 
     <ImageView
         android:id="@+id/portada"
@@ -40,6 +40,6 @@
         android:layout_below="@id/autor"
         android:layout_centerHorizontal="true"
         android:scaleType="fitCenter"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_launcher"/>
 </RelativeLayout>
 
