@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AudioLibros</string>
+    <string name="app_name">Audio Libros</string>
     <string name="drawer_open">navigation drawer abierto</string>
     <string name="drawer_close">navigation drawer cerrado</string>
 </resources>
