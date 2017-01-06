@@ -29,4 +29,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.0.1'
     testCompile 'junit:junit:4.12'
     compile files('libs/volley.jar')
+    compile 'com.github.81813780:AVLoadingIndicatorView:2.1.0'
 }
+
+

@@ -5,10 +5,10 @@
   <color name="primary_dark">#303F9F</color-->
 
 <!--Con tonos petroleo-->
-  <color name="primary">#3A85AB</color>
-  <color name="primary_dark">#34799C</color>
-  <color name="primary_light">#ADDAF0</color>
-  <color name="accent">#12F8B8</color>
+  <color name="primary">#3F51B5</color>
+  <color name="primary_dark">#303F9F</color>
+  <color name="primary_light">#C5CAE9</color>
+  <color name="accent">#FF4081</color>
   <color name="primary_text">#212121</color>
   <color name="secondary_text">#757575</color>
   <color name="icons">#FFFFFF</color>

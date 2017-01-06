@@ -86,6 +86,7 @@ public class SelectorFragment extends Fragment implements Animation.AnimationLis
                                 i.setType("text/plain");
                                 i.putExtra(Intent.EXTRA_SUBJECT, libro.titulo);
                                 i.putExtra(Intent.EXTRA_TEXT, libro.urlAudio);
+
                                 startActivity(Intent.createChooser(i, "Compartir"));
                                 break;
                             case 1: //Borrar
