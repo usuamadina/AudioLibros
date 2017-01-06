@@ -3,6 +3,7 @@ package com.example.audiolibros;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
@@ -60,8 +61,10 @@ public class SplashScreenActivity extends Activity {
                 avi.hide();
                 Intent mainIntent = new Intent().setClass(
                         SplashScreenActivity.this, MainActivity.class);
-                startActivity(mainIntent);
-                overridePendingTransition(R.anim.zoom, R.anim.menguar);
+                Bundle bndlanimation =
+                        ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.zoom,R.anim.menguar).toBundle();
+                startActivity(mainIntent, bndlanimation);
+              //  overridePendingTransition(R.anim.zoom, R.anim.menguar);
 
             }
 
