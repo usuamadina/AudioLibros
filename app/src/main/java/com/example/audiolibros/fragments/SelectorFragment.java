@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -65,6 +66,12 @@ public class SelectorFragment extends Fragment implements Animation.AnimationLis
         recyclerView = (RecyclerView) vista.findViewById(R.id.recycler_View);
         recyclerView.setLayoutManager(new GridLayoutManager(actividad, 2));
         recyclerView.setAdapter(adaptador);
+
+        DefaultItemAnimator animator = new DefaultItemAnimator();
+        animator.setAddDuration(800);
+        animator.setMoveDuration(800);
+        recyclerView.setItemAnimator(animator);
+
         adaptador.setOnItemClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,17 +100,19 @@ public class SelectorFragment extends Fragment implements Animation.AnimationLis
                                 Snackbar.make(v, "¿Estás seguro?", Snackbar.LENGTH_LONG).setAction("SI", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        Animation anim = AnimationUtils.loadAnimation(actividad, R.anim.menguar);
+                                       /* Animation anim = AnimationUtils.loadAnimation(actividad, R.anim.menguar);
                                         anim.setAnimationListener(SelectorFragment.this);
-                                        v.startAnimation(anim);
-                                        adaptador.borrar(id);
+                                        v.startAnimation(anim);*/
+                                        adaptador.notifyItemRemoved(id);
+                                       // adaptador.borrar(id);
                                     }
                                 }).show();
                                 break;
                             case 2: //Insertar
                                 int posicion = recyclerView.getChildLayoutPosition(v);
                                 adaptador.insertar((Libro) adaptador.getItem(posicion));
-                                adaptador.notifyDataSetChanged();
+                               // adaptador.notifyDataSetChanged();
+                                adaptador.notifyItemChanged(0);
                                 Snackbar.make(v, "Libro insertado", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
