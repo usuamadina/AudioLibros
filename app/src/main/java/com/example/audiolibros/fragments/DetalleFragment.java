@@ -43,12 +43,13 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
     }
 
 
-
     private void ponInfoLibro(int id, View vista) {
         Libro libro = ((Aplicacion) getActivity().getApplication())
                 .getVectorLibros().elementAt(id);
         ((TextView) vista.findViewById(R.id.titulo)).setText(libro.titulo);
         ((TextView) vista.findViewById(R.id.autor)).setText(libro.autor);
+        /*Aplicacion aplicacion = (Aplicacion) getActivity().getApplication();
+        ((NetworkImageView) vista.findViewById(R.id.portada)).setImageUrl(libro.urlImagen, aplicacion.getLectorImagenes());*/
         ((ImageView) vista.findViewById(R.id.portada))
                 .setImageResource(libro.recursoImagen);
         vista.setOnTouchListener(this);
@@ -78,7 +79,7 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
         mediaPlayer.start();
         mediaController.setMediaPlayer(this);
         mediaController.setAnchorView(getView().findViewById(R.id.fragment_detalle));
-        mediaController.setPadding(0,0,0,110);
+        mediaController.setPadding(0, 0, 0, 110);
         mediaController.setEnabled(true);
         mediaController.show();
     }
@@ -167,7 +168,9 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
     public void start() {
         mediaPlayer.start();
     }
-    @Override public int getAudioSessionId() {
+
+    @Override
+    public int getAudioSessionId() {
         return 0;
     }
 }
