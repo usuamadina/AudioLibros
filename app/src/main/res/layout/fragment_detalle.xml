@@ -54,11 +54,11 @@
         app:altoRegla="10dp"
         app:altoTexto="12dp"
         app:anchoPalanca="10dp"
-        app:colorGuia="#FF9050"
-        app:colorPalanca="#FF0000"
-        app:colorRegla="#B0B070"
-        app:colorTexto="#00A0A0"
-        android:layout_below="@+id/portada" />
+        app:colorGuia="@color/primary_dark"
+        app:colorPalanca="@color/accent"
+        app:colorRegla="@color/primary"
+        app:colorTexto="@color/secondary_text"
+        android:layout_below="@+id/portada"/>
 
 </RelativeLayout>
 
