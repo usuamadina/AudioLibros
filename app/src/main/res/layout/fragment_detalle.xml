@@ -59,6 +59,5 @@
         app:colorRegla="@color/primary"
         app:colorTexto="@color/secondary_text"
         android:layout_below="@+id/portada"/>
-
 </RelativeLayout>
 
