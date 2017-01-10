@@ -1,8 +1,10 @@
 package com.example.audiolibros;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 
@@ -43,6 +45,11 @@ public class WidgetProvider extends AppWidgetProvider {
             remoteViews.setTextViewText(R.id.tituloWidget,titulo);
 
         }
+
+
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        remoteViews.setOnClickPendingIntent(R.id.widget_layout,pendingIntent);
 
         AppWidgetManager.getInstance(context).updateAppWidget(widgetId, remoteViews);
     }
