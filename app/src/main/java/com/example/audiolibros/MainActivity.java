@@ -19,12 +19,14 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.audiolibros.fragments.DetalleFragment;
+import com.example.audiolibros.fragments.LibroStorage;
 import com.example.audiolibros.fragments.SelectorFragment;
 
 import static android.R.id.toggle;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private AdaptadorLibrosFiltro adaptador;
+    private LibroStorage libroStorage;
 
     //Ocultar elementos interfaz de usuario
     private AppBarLayout appBarLayout;
@@ -141,6 +144,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        LibroStorage libroStorage = new LibroStorage(this);
+
 
         // Ocultar elementos interfaz usuario
         appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
@@ -187,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         } else if (id == R.id.menu_acerca) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Mensaje de Acerca De");
+            builder.setMessage("AudioLibros");
             builder.setPositiveButton(android.R.string.ok, null);
             builder.create().show();
             return true;
@@ -197,14 +202,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void irUltimoVisitado() {
-        SharedPreferences pref = getSharedPreferences(
-                "com.example.audiolibros_internal", MODE_PRIVATE);
-        int id = pref.getInt("ultimo", -1);
-        if (id >= 0) {
-            mostrarDetalle(id);
-        } else {
-            Toast.makeText(this, "Sin última vista", Toast.LENGTH_LONG).show();
-        }
+       if(libroStorage.hasLastBook()){
+           Log.d("irUltimoVisitado","entra");
+           mostrarDetalle(libroStorage.getLastBook());
+
+       }else{
+           Toast.makeText(this, "Sin última visita", Toast.LENGTH_LONG).show();
+       }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

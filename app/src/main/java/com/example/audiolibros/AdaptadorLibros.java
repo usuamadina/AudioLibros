@@ -40,7 +40,10 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
         this.onClickListener = onClickListener;
     }
 
-    public void setOnItemLongClickListener(View.OnLongClickListener onLongClickListener) {
+    public void setOnItemLongClickListener
+
+
+            (View.OnLongClickListener onLongClickListener) {
         this.onLongClickListener = onLongClickListener;
     }
 
