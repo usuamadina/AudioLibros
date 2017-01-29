@@ -2,13 +2,15 @@ package com.example.audiolibros;
 
 import android.content.Context;
 
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Vector;
 
 /**
  * Created by usuwi on 23/12/2016.
  */
 
-public class AdaptadorLibrosFiltro extends AdaptadorLibros {
+public class AdaptadorLibrosFiltro extends AdaptadorLibros implements Observer {
     private Vector<Libro> vectorSinFiltro;// Vector con todos los libros
     private Vector<Integer> indiceFiltro; // Índice en vectorSinFiltro de
     // Cada elemento de vectorLibros
@@ -62,5 +64,12 @@ public class AdaptadorLibrosFiltro extends AdaptadorLibros {
     public void insertar(Libro libro){
         vectorSinFiltro.add(0,libro);
         recalculaFiltro();
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+        setBusqueda((String) data);
+        notifyDataSetChanged();
+
     }
 }

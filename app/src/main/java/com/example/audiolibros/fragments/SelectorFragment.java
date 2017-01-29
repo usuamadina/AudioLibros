@@ -30,6 +30,7 @@ import com.example.audiolibros.Aplicacion;
 import com.example.audiolibros.Libro;
 import com.example.audiolibros.MainActivity;
 import com.example.audiolibros.R;
+import com.example.audiolibros.SearchObservable;
 
 import java.util.Vector;
 
@@ -104,14 +105,14 @@ public class SelectorFragment extends Fragment implements Animation.AnimationLis
                                         anim.setAnimationListener(SelectorFragment.this);
                                         v.startAnimation(anim);*/
                                         adaptador.notifyItemRemoved(id);
-                                       // adaptador.borrar(id);
+                                        // adaptador.borrar(id);
                                     }
                                 }).show();
                                 break;
                             case 2: //Insertar
                                 int posicion = recyclerView.getChildLayoutPosition(v);
                                 adaptador.insertar((Libro) adaptador.getItem(posicion));
-                               // adaptador.notifyDataSetChanged();
+                                // adaptador.notifyDataSetChanged();
                                 adaptador.notifyItemChanged(0);
                                 Snackbar.make(v, "Libro insertado", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
                                     @Override
@@ -136,20 +137,13 @@ public class SelectorFragment extends Fragment implements Animation.AnimationLis
         inflater.inflate(R.menu.menu_selector, menu);
         MenuItem searchItem = menu.findItem(R.id.menu_buscar);
         SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setOnQueryTextListener(
-                new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextChange(String query) {
-                        adaptador.setBusqueda(query);
-                        adaptador.notifyDataSetChanged();
-                        return false;
-                    }
 
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        return false;
-                    }
-                });
+        SearchObservable searchObservable = new SearchObservable();
+        searchObservable.addObserver(adaptador);
+        searchView.setOnQueryTextListener(searchObservable);
+
+
+
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
