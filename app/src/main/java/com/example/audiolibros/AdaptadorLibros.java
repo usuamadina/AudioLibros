@@ -30,6 +30,17 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
     private View.OnLongClickListener onLongClickListener;
     private int colorVibrante = -1, colorApagado = -1;
 
+    private ClickAction clickAction = new EmptyClickAction();
+    private ClickAction longClickAction = new EmptyClickAction();
+
+    public void setLongClickAction(ClickAction longClickAction) {
+        this.longClickAction = longClickAction;
+    }
+
+    public void setClickAction(ClickAction clickAction) {
+        this.clickAction = clickAction;
+    }
+
     public AdaptadorLibros(Context contexto, Vector<Libro> vectorLibros) {
         inflador = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.vectorLibros = vectorLibros;
@@ -63,14 +74,12 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = inflador.inflate(R.layout.elemento_selector, null);
-        v.setOnClickListener(onClickListener);
-        v.setOnLongClickListener(onLongClickListener);
         return new ViewHolder(v);
 
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Libro libro = vectorLibros.elementAt(position);
         holder.portada.setImageResource(libro.recursoImagen);
 
@@ -95,6 +104,7 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
             holder.itemView.setBackgroundColor(libro.getColorApagado());
             holder.titulo.setBackgroundColor(libro.getColorVibrante());
         }
+
 
 
        /* En caso de cargar imagenes mediante librería Volley
@@ -128,6 +138,22 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
             }
         });*/
         holder.titulo.setText(libro.titulo);
+        holder.itemView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick (View v){
+                clickAction.execute(position);
+            }
+        });
+
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v){
+                longClickAction.execute(position);
+                return true;
+            }
+        });
+
 
 
       /*  //Extraer color principal del bitmap
