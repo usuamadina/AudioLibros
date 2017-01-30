@@ -16,14 +16,20 @@ public class Libro {
     public String genero;
     public Boolean novedad;
     public Boolean leido;
+
     public final static String G_TODOS = "Todos los géneros";
     public final static String G_EPICO = "Poema épico";
     public final static String G_S_XIX = "Literatura siglo XIX";
     public final static String G_SUSPENSE = "Suspense";
     public final static String[] G_ARRAY = new String[]{G_TODOS, G_EPICO, G_S_XIX, G_SUSPENSE};
 
+
+
     public int colorVibrante = -1;
     public int colorApagado=-1;
+
+
+    public final static Libro LIBRO_EMPTY = new Libro("", "anónimo", R.drawable.sin_portada, "", Libro.G_TODOS, true, false, -1,-1);
 
     public Libro(String titulo, String autor, int recursoImagen, String urlAudio, String genero, Boolean novedad, Boolean leido, int colorVibrante, int colorApagado) {
         this.titulo = titulo;
@@ -38,6 +44,7 @@ public class Libro {
         this.colorApagado = colorApagado;
 
     }
+
 
     public int getColorApagado() {
         return this.colorApagado;
@@ -57,10 +64,12 @@ public class Libro {
 
 
 
+
     public static Vector<Libro> ejemploLibros(){
         final String SERVIDOR =
                 "http://www.dcomg.upv.es/~jtomas/android/audiolibros/";
         Vector<Libro> libros = new Vector<Libro>();
+
         libros.add(new Libro("Kappa", "Akutagawa",
                 R.drawable.kappa, SERVIDOR+"kappa.mp3",
                 Libro.G_S_XIX, false, false,-1,-1));

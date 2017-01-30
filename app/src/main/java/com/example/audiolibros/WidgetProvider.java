@@ -35,7 +35,8 @@ public class WidgetProvider extends AppWidgetProvider {
 
         //Comprobamos si hay último libro
 
-        if (!ultimoLibro.equals(null)) {
+
+        if (!(ultimoLibro == Libro.LIBRO_EMPTY)) {
 
             String autor = ultimoLibro.autor;
             String titulo = ultimoLibro.titulo;

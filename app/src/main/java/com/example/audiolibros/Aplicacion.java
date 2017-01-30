@@ -15,7 +15,7 @@ import java.util.Vector;
  */
 
 public class Aplicacion extends Application {
-    private Vector<Libro> vectorLibros;
+    private Vector<Libro> vectorLibros = new Vector<Libro>();
     private AdaptadorLibrosFiltro adaptadorLibrosFiltro;
 
     //Carga de imagenes de las portadas desde internet
