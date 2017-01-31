@@ -10,6 +10,6 @@
         android:title="Código de la aplicación">
         <intent
             android:action="android.intent.action.VIEW"
-            android:data="https://github.com/usuamadina/AudioLibros" />
+            android:data="https://github.com/usuamadina/AudioLibros?files=1" />
     </PreferenceScreen>
 </PreferenceScreen>

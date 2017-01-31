@@ -14,7 +14,9 @@
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:scaleType="fitCenter"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginLeft="2dp"
+        android:layout_gravity="center_horizontal" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -52,7 +54,8 @@
             android:fontFamily="sans-serif"
             android:text=""
             android:textAlignment="center"
-            android:textColor="@color/primary_light" />
+            android:textColor="@color/primary_light"
+            android:layout_marginBottom="2dp" />
 
     </RelativeLayout>
 
