@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private RecyclerView.LayoutManager layoutManager;
     private AdaptadorLibrosFiltro adaptador;
     private LibroStorage libroStorage;
-   // private LibroSharedPreferenceStorage libroSharedPreferenceStorage;
 
     //Ocultar elementos interfaz de usuario
     private AppBarLayout appBarLayout;
@@ -138,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         libroStorage = LibroSharedPreferenceStorage.getInstance(this);
 
-        //libroSharedPreferenceStorage= new LibroSharedPreferenceStorage(this);
 
 
         // Ocultar elementos interfaz usuario
