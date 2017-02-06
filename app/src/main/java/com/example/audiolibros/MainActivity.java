@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private AdaptadorLibrosFiltro adaptador;
-    private LibroSharedPreferenceStorage libroSharedPreferenceStorage;
+    private LibroStorage libroStorage;
+   // private LibroSharedPreferenceStorage libroSharedPreferenceStorage;
 
     //Ocultar elementos interfaz de usuario
     private AppBarLayout appBarLayout;
@@ -135,7 +136,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        libroSharedPreferenceStorage= new LibroSharedPreferenceStorage(this);
+        libroStorage = LibroSharedPreferenceStorage.getInstance(this);
+
+        //libroSharedPreferenceStorage= new LibroSharedPreferenceStorage(this);
 
 
         // Ocultar elementos interfaz usuario
@@ -193,8 +196,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void irUltimoVisitado() {
-       if(libroSharedPreferenceStorage.hasLastBook()){
-           mostrarDetalle(libroSharedPreferenceStorage.getLastBook());
+       if(libroStorage.hasLastBook()){
+           mostrarDetalle(libroStorage.getLastBook());
 
        }else{
            Toast.makeText(this, "Sin última visita", Toast.LENGTH_LONG).show();
