@@ -55,8 +55,9 @@ public class OpenContextualMenuClickAction implements ClickAction {
                                        /* Animation anim = AnimationUtils.loadAnimation(actividad, R.anim.menguar);
                                         anim.setAnimationListener(SelectorFragment.this);
                                         v.startAnimation(anim);*/
+                                adapter.borrar(id);
                                 adapter.notifyItemRemoved(id);
-                                // adaptador.borrar(id);
+
                             }
                         }).show();
                         break;

@@ -26,8 +26,6 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
     private LayoutInflater inflador;
     protected Vector<Libro> vectorLibros;
     private Context contexto;
-    private View.OnClickListener onClickListener;
-    private View.OnLongClickListener onLongClickListener;
     private int colorVibrante = -1, colorApagado = -1;
 
     private ClickAction clickAction = new EmptyClickAction();
@@ -45,17 +43,6 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
         inflador = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.vectorLibros = vectorLibros;
         this.contexto = contexto;
-    }
-
-    public void setOnItemClickListener(View.OnClickListener onClickListener) {
-        this.onClickListener = onClickListener;
-    }
-
-    public void setOnItemLongClickListener
-
-
-            (View.OnLongClickListener onLongClickListener) {
-        this.onLongClickListener = onLongClickListener;
     }
 
 
