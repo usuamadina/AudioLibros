@@ -1,7 +1,6 @@
 package com.example.audiolibros;
 
 import android.content.Context;
-
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
@@ -54,9 +53,11 @@ public class AdaptadorLibrosFiltro extends AdaptadorLibros implements Observer {
         }
     }
     public Libro getItem(int posicion) { return vectorSinFiltro.elementAt(indiceFiltro.elementAt(posicion)); }
+
     public long getItemId(int posicion) {
         return indiceFiltro.elementAt(posicion);
     }
+
     public void borrar(int posicion){
         vectorSinFiltro.remove((int)getItemId(posicion));
         recalculaFiltro();
