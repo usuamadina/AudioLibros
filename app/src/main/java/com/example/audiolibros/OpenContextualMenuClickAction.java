@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 
 import java.util.Vector;
@@ -31,6 +32,7 @@ public class OpenContextualMenuClickAction implements ClickAction {
 
     @Override
     public void execute(int position) {
+        Log.d("LongClick posicion:", String.valueOf(position));
 
         final int id = position;
 
@@ -62,9 +64,9 @@ public class OpenContextualMenuClickAction implements ClickAction {
                         }).show();
                         break;
                     case 2: //Insertar
-                        adapter.insertar(adapter.getItem(id));
+                        adapter.insertar((Libro)adapter.getItem(id));
                         // adaptador.notifyDataSetChanged();
-                        adapter.notifyItemChanged(0);
+                        adapter.notifyItemInserted(0);
                         Snackbar.make(view, "Libro insertado", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

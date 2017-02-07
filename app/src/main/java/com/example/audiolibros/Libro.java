@@ -72,7 +72,7 @@ public class Libro {
                 .withGenero(Libro.G_S_XIX).withLeido(false).withNuevo(false).withColorApagado(-1)
                 .withColorVibrante(-1).build());
         libros.add(new LibroBuilder().withTitulo("Avecilla").withAutor("Alas Clarín, Leopoldo")
-                .withRecursoImagen(R.drawable.avecilla).withUrlAudio(SERVIDOR + "avecilla")
+                .withRecursoImagen(R.drawable.avecilla).withUrlAudio(SERVIDOR + "avecilla.mp3")
                 .withGenero(Libro.G_S_XIX).withNuevo(true).withLeido(false).withColorApagado(-1)
                 .withColorVibrante(-1).build());
         libros.add(new LibroBuilder().withTitulo("Divina Comedia").withAutor("Dante")
