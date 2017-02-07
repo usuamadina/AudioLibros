@@ -37,11 +37,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
 
+    private LibrosSingleton librosSingleton;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        adaptador = ((Aplicacion) getApplicationContext()).getAdaptador();
+
+        librosSingleton = LibrosSingleton.getInstance(this);
+        adaptador = librosSingleton.getAdaptador();
+
+        //adaptador = ((Aplicacion) getApplicationContext()).getAdaptador();
         if ((findViewById(R.id.contenedor_pequeno) != null) &&
                 (getSupportFragmentManager().findFragmentById(R.id.contenedor_pequeno) == null)) {
             SelectorFragment primerFragment = new SelectorFragment();
