@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
  * Created by usuwi on 29/01/2017.
  */
 
-public class LibroSharedPreferenceStorage implements LibroStorage {
+public class LibroSharedPreferenceStorage implements LibroStorage{
     public static final String PREF_AUDIOLIBROS = "com.example.audiolibros_internal";
     public static final String KEY_ULTIMO_LIBRO = "ultimo";
     private final Context context;

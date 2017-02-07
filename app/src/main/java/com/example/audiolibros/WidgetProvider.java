@@ -25,11 +25,12 @@ public class WidgetProvider extends AppWidgetProvider {
 
 
     public static void actualizaWidget(Context context, int widgetId) {
-
+        LibrosSingleton librosSingleton = LibrosSingleton.getInstance(context);
         //Obtenemos ultimo libro
         SharedPreferences prefs = context.getSharedPreferences("com.example.audioLibros_internal", Context.MODE_PRIVATE);
         int id = prefs.getInt("ultimo", 0);
-        Libro ultimoLibro = ((Aplicacion) context.getApplicationContext()).getVectorLibros().elementAt(id);
+        Libro ultimoLibro = librosSingleton.getVectorLibros().elementAt(id);
+              //  ((Aplicacion) context.getApplicationContext()).getVectorLibros().elementAt(id);
 
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
 

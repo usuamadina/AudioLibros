@@ -26,8 +26,8 @@ import android.widget.Toast;
 
 import com.example.audiolibros.AdaptadorLibros;
 import com.example.audiolibros.AdaptadorLibrosFiltro;
-import com.example.audiolibros.Aplicacion;
 import com.example.audiolibros.Libro;
+import com.example.audiolibros.LibrosSingleton;
 import com.example.audiolibros.MainActivity;
 import com.example.audiolibros.OpenContextualMenuClickAction;
 import com.example.audiolibros.OpenDetailClickAction;
@@ -47,17 +47,18 @@ public class SelectorFragment extends Fragment implements Animation.AnimationLis
     private RecyclerView recyclerView;
     private AdaptadorLibrosFiltro adaptador;
     private Vector<Libro> vectorLibros;
+    private LibrosSingleton librosSingleton;
 
     @Override
-    public void onAttach(Context contexto) {
+    public void onAttach(Context contexto){
         super.onAttach(contexto);
-        Log.d("SelectorFragment", "onAtach");
+        librosSingleton = LibrosSingleton.getInstance(getContext());
+
         if (contexto instanceof Activity) {
-            Log.d("SelectorFragment", "entra en el if");
             this.actividad = (Activity) contexto;
-            Aplicacion app = (Aplicacion) actividad.getApplication();
-            adaptador = app.getAdaptador();
-            vectorLibros = app.getVectorLibros();
+
+            adaptador = librosSingleton.getAdaptador();
+            vectorLibros = librosSingleton.getVectorLibros();
         }
     }
 
@@ -65,7 +66,7 @@ public class SelectorFragment extends Fragment implements Animation.AnimationLis
     public View onCreateView(LayoutInflater inflador, ViewGroup contenedor, Bundle savedInstanceState) {
         View vista = inflador.inflate(R.layout.fragment_selector, contenedor, false);
         setHasOptionsMenu(true);
-        Log.d("SelectorFragment", "onCreateView");
+
         recyclerView = (RecyclerView) vista.findViewById(R.id.recycler_View);
         recyclerView.setLayoutManager(new GridLayoutManager(actividad, 2));
         recyclerView.setAdapter(adaptador);

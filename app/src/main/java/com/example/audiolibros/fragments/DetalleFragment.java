@@ -13,8 +13,9 @@ import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
 
-import com.example.audiolibros.Aplicacion;
+
 import com.example.audiolibros.Libro;
+import com.example.audiolibros.LibrosSingleton;
 import com.example.audiolibros.MainActivity;
 import com.example.audiolibros.R;
 
@@ -28,9 +29,11 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
     public static String ARG_ID_LIBRO = "id_libro";
     MediaPlayer mediaPlayer;
     MediaController mediaController;
+    LibrosSingleton librosSingleton;
 
     @Override
     public View onCreateView(LayoutInflater inflador, ViewGroup contenedor, Bundle savedInstanceState) {
+        librosSingleton = LibrosSingleton.getInstance(getContext());
         View vista = inflador.inflate(R.layout.fragment_detalle, contenedor, false);
         Bundle args = getArguments();
         if (args != null) {
@@ -44,15 +47,16 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
 
 
     private void ponInfoLibro(int id, View vista) {
-        Libro libro = ((Aplicacion) getActivity().getApplication())
-                .getVectorLibros().elementAt(id);
+
+        Libro libro = librosSingleton.getVectorLibros().elementAt(id);
         ((TextView) vista.findViewById(R.id.titulo)).setText(libro.titulo);
         ((TextView) vista.findViewById(R.id.autor)).setText(libro.autor);
-        /*Aplicacion aplicacion = (Aplicacion) getActivity().getApplication();
-        ((NetworkImageView) vista.findViewById(R.id.portada)).setImageUrl(libro.urlImagen, aplicacion.getLectorImagenes());*/
+
         ((ImageView) vista.findViewById(R.id.portada))
                 .setImageResource(libro.recursoImagen);
+
         vista.setOnTouchListener(this);
+
         if (mediaPlayer != null) {
             mediaPlayer.release();
         }
@@ -75,7 +79,6 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
 
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
-        Log.d("Audiolibros", "Entramos en onPrepared de MediaPlayer");
         mediaPlayer.start();
         mediaController.setMediaPlayer(this);
         mediaController.setAnchorView(getView().findViewById(R.id.fragment_detalle));
@@ -106,7 +109,7 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
             mediaPlayer.stop();
             mediaPlayer.release();
         } catch (Exception e) {
-            Log.d("Audiolibros", "Error en mediaPlayer.stop()");
+            Log.e("Audiolibros", "ERROR: Error en mediaPlayer.stop()");
         }
         super.onStop();
     }
