@@ -64,8 +64,7 @@ public class OpenContextualMenuClickAction implements ClickAction {
                         }).show();
                         break;
                     case 2: //Insertar
-                        adapter.insertar((Libro)adapter.getItem(id));
-                        // adaptador.notifyDataSetChanged();
+                        adapter.insertar(adapter.getItem(id));
                         adapter.notifyItemInserted(0);
                         Snackbar.make(view, "Libro insertado", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
                             @Override

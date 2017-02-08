@@ -39,6 +39,7 @@ public class VolleySingleton {
         colaPeticiones = Volley.newRequestQueue(context);
         lectorImagenes = new ImageLoader(colaPeticiones, new ImageLoader.ImageCache() {
             private final LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(10);
+
             public void putBitmap(String url, Bitmap bitmap) {
                 cache.put(url, bitmap);
             }
@@ -61,17 +62,11 @@ public class VolleySingleton {
         return colaPeticiones;
     }
 
-    public static void setColaPeticiones(RequestQueue colaPeticiones) {
-        VolleySingleton.colaPeticiones = colaPeticiones;
-    }
 
     public static ImageLoader getLectorImagenes() {
         return lectorImagenes;
     }
 
-    public static void setLectorImagenes(ImageLoader lectorImagenes) {
-        VolleySingleton.lectorImagenes = lectorImagenes;
-    }
 
     public Bitmap getBitmap() {
         return bitmap;

@@ -89,7 +89,7 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
                         }
                     });
 
-                    // Palette palette = Palette.from(bitmap).generate();
+
 
                 }
 
@@ -104,8 +104,7 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
 
         Bitmap bitmap = volleySingleton.getBitmap();
         if (bitmap != null && !bitmap.isRecycled() && libro.getColorApagado()==-1 && libro.getColorVibrante()==-1){
-           // holder.portada.setImageBitmap(bitmap);
-            //generamos la paleta de modo asíncrono
+
             Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
                 @Override
                 public void onGenerated(Palette palette) {
@@ -114,7 +113,7 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
 
                    holder.itemView.setBackgroundColor(libro.getColorApagado());
                    holder.titulo.setBackgroundColor(libro.getColorVibrante());
-                  // holder.portada.invalidate();
+                    holder.portada.invalidate();
                 }
             });
 
@@ -124,10 +123,6 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
             holder.titulo.setBackgroundColor(libro.getColorVibrante());
         }
 
-
-
-       /* En caso de cargar imagenes mediante librería Volley
-        ;*/
         holder.titulo.setText(libro.titulo);
         holder.itemView.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -146,31 +141,7 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
         });
 
 
-
-      /*  //Extraer color principal del bitmap
-        Bitmap bitmap = BitmapFactory.decodeResource(contexto.getResources(), libro.urlImagen);
-        Palette palette = Palette.from(bitmap).generate();
-
-        holder.itemView.setBackground(palette.getLightMutedColor(0));
-        holder.titulo.setBackground(palette.getVibrantColor(0));*/
-
-
     }
-
-   /*  public static Bitmap getBitmapFromURL(String src) {
-        try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            // Log exception
-            return null;
-        }
-    }*/
 
 
     @Override

@@ -108,17 +108,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-        //
-        // Aplicacion app = (Aplicacion)getApplication();
-        // recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-        // recyclerView.setAdapter(app.getAdaptador());
-        // layoutManager = new LinearLayoutManager(this);
-        // recyclerView.setLayoutManager(layoutManager);
-       /* app.getAdaptador().setOnItemClickListener(new View.OnClickListener(){
-            @Override public void onClick(View v){
-                Toast.makeText(MainActivity.this,"Seleccionando el elemento: " + recyclerView.getChildAdapterPosition(v), Toast.LENGTH_SHORT).show();
-            }ActionBar actionBar = getSupportActionBar(); if (actionBar != null) { actionBar.setDisplayHomeAsUpEnabled(true); }
-        });*/
+
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -253,17 +243,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             tabs.setVisibility(View.GONE);
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
-        /*
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });*/
+
     }
 }

@@ -46,11 +46,6 @@ public class LibrosSingleton {
         return adaptador;
     }
 
-    public void setAdaptador(AdaptadorLibrosFiltro adaptador) {
-        this.adaptador = adaptador;
-    }
-
-
     public Vector<Libro> getVectorLibros() {
         return vectorLibros;
     }
