@@ -9,8 +9,7 @@ import java.util.Vector;
 public class Libro {
     public String titulo;
     public String autor;
-    //public String urlImagen;
-    public int recursoImagen;
+    public String urlImagen;
     public String urlAudio;
 
     public String genero;
@@ -28,13 +27,12 @@ public class Libro {
     public int colorApagado = -1;
 
 
-    public final static Libro LIBRO_EMPTY = new Libro("", "anónimo", R.drawable.sin_portada, "", Libro.G_TODOS, true, false, -1, -1);
+    public final static Libro LIBRO_EMPTY = new Libro("", "anónimo", "http://www.dcomg.upv.es/~jtomas/android/audiolibros/sin_portada.jpg" , "", Libro.G_TODOS, true, false, -1, -1);
 
-    public Libro(String titulo, String autor, int recursoImagen, String urlAudio, String genero, Boolean novedad, Boolean leido, int colorVibrante, int colorApagado) {
+    public Libro(String titulo, String autor, String urlImagen, String urlAudio, String genero, Boolean novedad, Boolean leido, int colorVibrante, int colorApagado) {
         this.titulo = titulo;
         this.autor = autor;
-        // this.urlImagen= urlImagen;
-        this.recursoImagen = recursoImagen;
+        this.urlImagen = urlImagen;
         this.urlAudio = urlAudio;
         this.genero = genero;
         this.novedad = novedad;
@@ -68,31 +66,31 @@ public class Libro {
         Vector<Libro> libros = new Vector<Libro>();
 
         libros.add(new LibroBuilder().withTitulo("Kappa").withAutor("Akutagawa")
-                .withRecursoImagen(R.drawable.kappa).withUrlAudio(SERVIDOR + "kappa.mp3")
+                .withUrlImagen(SERVIDOR + "kappa.jpg").withUrlAudio(SERVIDOR + "kappa.mp3")
                 .withGenero(Libro.G_S_XIX).withLeido(false).withNuevo(false).withColorApagado(-1)
                 .withColorVibrante(-1).build());
         libros.add(new LibroBuilder().withTitulo("Avecilla").withAutor("Alas Clarín, Leopoldo")
-                .withRecursoImagen(R.drawable.avecilla).withUrlAudio(SERVIDOR + "avecilla.mp3")
+                .withUrlImagen(SERVIDOR + "avecilla.jpg").withUrlAudio(SERVIDOR + "avecilla.mp3")
                 .withGenero(Libro.G_S_XIX).withNuevo(true).withLeido(false).withColorApagado(-1)
                 .withColorVibrante(-1).build());
         libros.add(new LibroBuilder().withTitulo("Divina Comedia").withAutor("Dante")
-                .withRecursoImagen(R.drawable.divinacomedia).withUrlAudio(SERVIDOR + "divina_comedia.mp3")
+                .withUrlImagen(SERVIDOR + "divina_comedia.jpg").withUrlAudio(SERVIDOR + "divina_comedia.mp3")
                 .withGenero(Libro.G_EPICO).withNuevo(true).withLeido(false).withColorApagado(-1)
                 .withColorVibrante(-1).build());
         libros.add(new LibroBuilder().withTitulo("Viejo Pancho, El").withAutor("Alonso y Trelles, José")
-                .withRecursoImagen(R.drawable.viejo_pancho).withUrlAudio(SERVIDOR + "viejo_pancho.mp3")
+                .withUrlImagen(SERVIDOR + "viejo_pancho.jpg").withUrlAudio(SERVIDOR + "viejo_pancho.mp3")
                 .withGenero(Libro.G_S_XIX).withNuevo(true).withLeido(true).withColorApagado(-1)
                 .withColorVibrante(-1).build());
         libros.add(new LibroBuilder().withTitulo("Canción de Rolando").withAutor("Anónimo")
-                .withRecursoImagen(R.drawable.cancion_rolando).withUrlAudio(SERVIDOR + "cancion_rolando.mp3")
+                .withUrlImagen(SERVIDOR + "cancion_rolando.jpg").withUrlAudio(SERVIDOR + "cancion_rolando.mp3")
                 .withGenero(Libro.G_EPICO).withNuevo(false).withLeido(true).withColorApagado(-1)
                 .withColorVibrante(-1).build());
         libros.add(new LibroBuilder().withTitulo("Matrimonio de sabuesos").withAutor("Agatha Christie")
-                .withRecursoImagen(R.drawable.matrimonio_sabuesos).withUrlAudio(SERVIDOR + "matrim_sabuesos.mp3")
+                .withUrlImagen(SERVIDOR + "matrim_sabuesos.jpg").withUrlAudio(SERVIDOR + "matrim_sabuesos.mp3")
                 .withGenero(Libro.G_SUSPENSE).withNuevo(false).withLeido(true).withColorApagado(-1)
                 .withColorVibrante(-1).build());
         libros.add(new LibroBuilder().withTitulo("La Iliada").withAutor("Homero")
-                .withRecursoImagen(R.drawable.iliada).withUrlAudio(SERVIDOR + "la_iliada.mp3")
+                .withUrlImagen(SERVIDOR + "la_iliada.jpg").withUrlAudio(SERVIDOR + "la_iliada.mp3")
                 .withGenero(Libro.G_EPICO).withNuevo(true).withLeido(false).withColorApagado(-1)
                 .withColorVibrante(-1).build());
         return libros;
@@ -101,7 +99,7 @@ public class Libro {
     public static class LibroBuilder {
         private String titulo = "";
         private String autor = "anónimo";
-        private int recursoImagen = R.drawable.sin_portada;
+        private String urlImagen = "http://www.dcomg.upv.es/~jtomas/android/audiolibros/sin_portada.jpg";
         private String urlAudio = "";
         private String genero = G_TODOS;
         private boolean nuevo = true;
@@ -120,8 +118,8 @@ public class Libro {
             return this;
         }
 
-        public LibroBuilder withRecursoImagen(int recursoImagen) {
-            this.recursoImagen= recursoImagen;
+        public LibroBuilder withUrlImagen(String urlImagen) {
+            this.urlImagen= urlImagen;
             return this;
         }
 
@@ -155,7 +153,7 @@ public class Libro {
             return this;
         }
 
-        public Libro build() { return new Libro(titulo, autor, recursoImagen, urlAudio, genero, nuevo, leido, colorVibrante, colorApagado); }
+        public Libro build() { return new Libro(titulo, autor, urlImagen, urlAudio, genero, nuevo, leido, colorVibrante, colorApagado); }
     }
 
 

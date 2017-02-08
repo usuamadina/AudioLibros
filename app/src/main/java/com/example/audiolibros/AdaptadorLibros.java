@@ -16,6 +16,10 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Vector;
 
 /**
@@ -68,9 +72,37 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Libro libro = vectorLibros.elementAt(position);
-        holder.portada.setImageResource(libro.recursoImagen);
+       VolleySingleton volleySingleton = VolleySingleton.getInstance(contexto);
+        volleySingleton.getLectorImagenes().get(libro.urlImagen, new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                Bitmap bitmap = response.getBitmap();
+                holder.portada.setImageBitmap(bitmap);
+                if (bitmap != null) {
+                    holder.portada.setImageBitmap(bitmap);
+                    Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                        public void onGenerated(Palette palette) {
+                            holder.itemView.setBackgroundColor(palette.getLightMutedColor(0));
+                            holder.titulo.setBackgroundColor(palette.getLightVibrantColor(0));
+                            holder.portada.invalidate();
+                            // Use generated instance
+                        }
+                    });
 
-        Bitmap bitmap = BitmapFactory.decodeResource(contexto.getResources(), libro.recursoImagen);
+                    // Palette palette = Palette.from(bitmap).generate();
+
+                }
+
+
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                holder.portada.setImageResource(R.drawable.books);
+            }
+        });
+
+        Bitmap bitmap = volleySingleton.getBitmap();
         if (bitmap != null && !bitmap.isRecycled() && libro.getColorApagado()==-1 && libro.getColorVibrante()==-1){
            // holder.portada.setImageBitmap(bitmap);
             //generamos la paleta de modo asíncrono
@@ -95,35 +127,7 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
 
 
        /* En caso de cargar imagenes mediante librería Volley
-         Aplicacion aplicacion = (Aplicacion) contexto.getApplicationContext();
-       aplicacion.getLectorImagenes().get(libro.urlImagen, new ImageLoader.ImageListener() {
-            @Override
-            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                Bitmap bitmap = response.getBitmap();
-                holder.portada.setImageBitmap(bitmap);
-                if (bitmap != null) {
-                    holder.portada.setImageBitmap(bitmap);
-                    Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-                        public void onGenerated(Palette palette) {
-                            holder.itemView.setBackgroundColor(palette.getLightMutedColor(0));
-                            holder.titulo.setBackgroundColor(palette.getLightVibrantColor(0));
-                            holder.portada.invalidate();
-                            // Use generated instance
-                        }
-                    });
-
-                   // Palette palette = Palette.from(bitmap).generate();
-
-                }
-
-
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                holder.portada.setImageResource(R.drawable.books);
-            }
-        });*/
+        ;*/
         holder.titulo.setText(libro.titulo);
         holder.itemView.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -152,6 +156,21 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
 
 
     }
+
+   /*  public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            // Log exception
+            return null;
+        }
+    }*/
 
 
     @Override

@@ -1,4 +1,4 @@
-package com.example.audiolibros;
+/*package com.example.audiolibros;
 
 import android.app.Application;
 import android.graphics.Bitmap;
@@ -6,15 +6,19 @@ import android.support.v4.util.LruCache;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.Volley;
+/*import com.android.volley.toolbox.Volley;
 
 import java.util.Vector;
 
 /**
  * Created by usuwi on 15/12/2016.
- */
+
 
 public class Aplicacion extends Application {
+
+    private LibrosSingleton instancia = LibrosSingleton.getInstance(this);
+
+
     private Vector<Libro> vectorLibros = new Vector<Libro>();
     private AdaptadorLibrosFiltro adaptadorLibrosFiltro;
 
@@ -24,8 +28,8 @@ public class Aplicacion extends Application {
 
     @Override
     public void onCreate() {
-        vectorLibros = Libro.ejemploLibros();
-        adaptadorLibrosFiltro = new AdaptadorLibrosFiltro(this, vectorLibros);
+        vectorLibros = instancia.getVectorLibros();
+        adaptadorLibrosFiltro = instancia.getAdaptador();
         /*colaPeticiones = Volley.newRequestQueue(this);
         lectorImagenes = new ImageLoader(colaPeticiones, new ImageLoader.ImageCache() {
             private final LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(10);
@@ -37,17 +41,19 @@ public class Aplicacion extends Application {
             public Bitmap getBitmap(String url) {
                 return cache.get(url);
             }
-        });*/
+        });
     }
 
-    public AdaptadorLibrosFiltro getAdaptador() {
+    //He comentado el getAdaptador() y getVectorLibros por el refactoring del singleton
+
+   /* public AdaptadorLibrosFiltro getAdaptador() {
         return adaptadorLibrosFiltro;
 
     }
 
     public Vector<Libro> getVectorLibros() {
         return vectorLibros;
-    }
+    }*/
 
    /* public static RequestQueue getColaPeticiones() {
         return colaPeticiones;
@@ -63,5 +69,6 @@ public class Aplicacion extends Application {
 
     public static void setLectorImagenes(ImageLoader lectorImagenes) {
         Aplicacion.lectorImagenes = lectorImagenes;
-    }*/
+    }
 }
+*/

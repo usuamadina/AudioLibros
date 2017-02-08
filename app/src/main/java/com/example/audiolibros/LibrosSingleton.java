@@ -16,6 +16,8 @@ public class LibrosSingleton {
     private Vector<Libro> vectorLibros = new Vector<Libro>();
     private AdaptadorLibrosFiltro adaptador;
 
+
+
     public static LibrosSingleton getInstance(Context context) {
         if (instance == null){
             synchronized(LibrosSingleton.class){
