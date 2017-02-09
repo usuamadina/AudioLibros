@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle toggle;
 
     private LibrosSingleton librosSingleton;
+    private BooksRepository booksRepository;
 
 
     @Override
@@ -52,9 +53,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         librosSingleton = LibrosSingleton.getInstance(this);
         adaptador = librosSingleton.getAdaptador();
         LibroStorage libroStorage = LibroSharedPreferenceStorage.getInstance(this);
+        booksRepository = new BooksRepository(libroStorage);
 
-        mainPresenter = new MainPresenter(new HasLastBook(libroStorage), new GetLastBook(libroStorage),
-                new SaveLastBook(libroStorage), libroStorage, this);
+        mainPresenter = new MainPresenter(new HasLastBook(booksRepository), new GetLastBook(booksRepository),
+                new SaveLastBook(booksRepository), libroStorage, this);
 
 
         if ((findViewById(R.id.contenedor_pequeno) != null) &&

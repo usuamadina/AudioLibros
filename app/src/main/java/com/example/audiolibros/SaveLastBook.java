@@ -5,14 +5,14 @@ package com.example.audiolibros;
  */
 
 public class SaveLastBook {
-    private final LibroStorage libroStorage;
+    private final BooksRepository booksRepository;
 
-    public SaveLastBook(LibroStorage libroStorage) {
-        this.libroStorage = libroStorage;
+    public SaveLastBook(BooksRepository booksRepository) {
+        this.booksRepository = booksRepository;
     }
 
     public void execute(int id) {
-        libroStorage.saveLastBook(id);
+        booksRepository.saveLastBook(id);
     }
 
 }
