@@ -5,10 +5,16 @@ package com.example.audiolibros;
  */
 
 public class MainPresenter {
+    private final HasLastBook hasLastBook;
+    private final GetLastBook getLastBook;
+    private final SaveLastBook saveLastBook;
     private final LibroStorage libroStorage;
     private final View view;
 
-    public MainPresenter(LibroStorage libroStorage, MainPresenter.View view) {
+    public MainPresenter(HasLastBook hasLastBook, GetLastBook getLastBook, SaveLastBook saveLastBook, LibroStorage libroStorage, View view) {
+        this.getLastBook = getLastBook;
+        this.hasLastBook = hasLastBook;
+        this.saveLastBook = saveLastBook;
         this.libroStorage = libroStorage;
         this.view = view;
     }
@@ -22,7 +28,7 @@ public class MainPresenter {
     }
 
     public void openDetalle(int id) {
-        libroStorage.saveLastBook(id);
+        saveLastBook.execute(id);
         view.mostrarFragmentDetalle(id);
     }
 

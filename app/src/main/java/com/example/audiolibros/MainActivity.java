@@ -51,8 +51,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         librosSingleton = LibrosSingleton.getInstance(this);
         adaptador = librosSingleton.getAdaptador();
+        LibroStorage libroStorage = LibroSharedPreferenceStorage.getInstance(this);
 
-        mainPresenter = new MainPresenter(LibroSharedPreferenceStorage.getInstance(this),this);
+        mainPresenter = new MainPresenter(new HasLastBook(libroStorage), new GetLastBook(libroStorage),
+                new SaveLastBook(libroStorage), libroStorage, this);
 
 
         if ((findViewById(R.id.contenedor_pequeno) != null) &&
@@ -148,8 +150,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void mostrarDetalle(int id) {
-       /* mostrarFragmentDetalle(id);
-        controller.saveLastBook(id);*/
         mainPresenter.openDetalle(id);
     }
 
