@@ -3,6 +3,8 @@ package com.example.audiolibros;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by usuwi on 29/01/2017.
  */
@@ -18,9 +20,9 @@ public class LibroSharedPreferenceStorage implements LibroStorage{
 
     private static LibroSharedPreferenceStorage instance;
 
-    public static LibroStorage getInstance(Context context) {
+    public static LibroSharedPreferenceStorage getInstance(Context context) {
         if (instance == null){
-            synchronized (LibroStorage.class) {
+            synchronized (LibroSharedPreferenceStorage.class) {
                 if (instance == null) {
                     instance = new LibroSharedPreferenceStorage(context);
                 }
@@ -34,11 +36,20 @@ public class LibroSharedPreferenceStorage implements LibroStorage{
     }
 
     private SharedPreferences getPreference() {
-        return context.getSharedPreferences(PREF_AUDIOLIBROS, Context.MODE_PRIVATE);
+        return context.getSharedPreferences(PREF_AUDIOLIBROS, MODE_PRIVATE);
     }
 
     public int getLastBook() {
         return getPreference().getInt(KEY_ULTIMO_LIBRO, -1);
+    }
+
+    public void saveLastBook(int id){
+        SharedPreferences pref = context.getSharedPreferences(
+                "com.example.audiolibros_internal", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("ultimo", id);
+        editor.commit();
+
     }
 }
 

@@ -25,11 +25,15 @@ import android.widget.Toast;
 import com.example.audiolibros.fragments.DetalleFragment;
 import com.example.audiolibros.fragments.SelectorFragment;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import static com.example.audiolibros.LibroSharedPreferenceStorage.*;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MainPresenter.View {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private AdaptadorLibrosFiltro adaptador;
-    private LibroStorage libroStorage;
+    private MainPresenter mainPresenter;
+   // private MainController controller;
+    // private LibroStorage libroStorage;
 
     //Ocultar elementos interfaz de usuario
     private AppBarLayout appBarLayout;
@@ -48,7 +52,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         librosSingleton = LibrosSingleton.getInstance(this);
         adaptador = librosSingleton.getAdaptador();
 
-        //adaptador = ((Aplicacion) getApplicationContext()).getAdaptador();
+        mainPresenter = new MainPresenter(LibroSharedPreferenceStorage.getInstance(this),this);
+
+
         if ((findViewById(R.id.contenedor_pequeno) != null) &&
                 (getSupportFragmentManager().findFragmentById(R.id.contenedor_pequeno) == null)) {
             SelectorFragment primerFragment = new SelectorFragment();
@@ -64,12 +70,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Mostrar último visitado", Snackbar.LENGTH_LONG).setAction("Ok", new View.OnClickListener() {
+               /* Snackbar.make(view, "Mostrar último visitado", Snackbar.LENGTH_LONG).setAction("Ok", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         irUltimoVisitado();
                     }
-                }).show();
+                }).show();*/
+                mainPresenter.clickFavoriteButton();
             }
         });
 
@@ -132,9 +139,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        libroStorage = LibroSharedPreferenceStorage.getInstance(this);
-
-
 
         // Ocultar elementos interfaz usuario
         appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
@@ -144,6 +148,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void mostrarDetalle(int id) {
+       /* mostrarFragmentDetalle(id);
+        controller.saveLastBook(id);*/
+        mainPresenter.openDetalle(id);
+    }
+
+    @Override
+    public void mostrarNoUltimaVisita() { Toast.makeText(this, "Sin última vista",Toast.LENGTH_LONG).show(); }
+
+
+    public void mostrarFragmentDetalle(int id) {
         DetalleFragment detalleFragment = (DetalleFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_detalle);
         if (detalleFragment != null) {
             detalleFragment.ponInfoLibro(id);
@@ -158,12 +172,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             transaccion.addToBackStack(null);
             transaccion.commit();
         }
-
-        SharedPreferences pref = getSharedPreferences(
-                "com.example.audiolibros_internal", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("ultimo", id);
-        editor.commit();
     }
 
     @Override
@@ -191,12 +199,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void irUltimoVisitado() {
-       if(libroStorage.hasLastBook()){
-           mostrarDetalle(libroStorage.getLastBook());
-
-       }else{
-           Toast.makeText(this, "Sin última visita", Toast.LENGTH_LONG).show();
-       }
+        mainPresenter.clickFavoriteButton();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
