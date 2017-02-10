@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 25
@@ -33,6 +34,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile files('libs/volley.jar')
     compile 'com.github.81813780:AVLoadingIndicatorView:2.1.0'
+    compile 'com.firebaseui:firebase-ui-auth:1.1.1'
 }
+
 
 

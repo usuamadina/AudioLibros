@@ -2,11 +2,9 @@ package com.example.audiolibros;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -32,8 +30,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private RecyclerView.LayoutManager layoutManager;
     private AdaptadorLibrosFiltro adaptador;
     private MainPresenter mainPresenter;
-   // private MainController controller;
-    // private LibroStorage libroStorage;
+    private LibrosSingleton librosSingleton;
+    private BooksRepository booksRepository;
+    private LibroStorage libroStorage;
+
 
     //Ocultar elementos interfaz de usuario
     private AppBarLayout appBarLayout;
@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
 
-    private LibrosSingleton librosSingleton;
-    private BooksRepository booksRepository;
 
 
     @Override
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         librosSingleton = LibrosSingleton.getInstance(this);
         adaptador = librosSingleton.getAdaptador();
-        LibroStorage libroStorage = LibroSharedPreferenceStorage.getInstance(this);
+        libroStorage = LibroSharedPreferenceStorage.getInstance(this);
         booksRepository = new BooksRepository(libroStorage);
 
         mainPresenter = new MainPresenter(new HasLastBook(booksRepository), new GetLastBook(booksRepository),
@@ -74,12 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               /* Snackbar.make(view, "Mostrar último visitado", Snackbar.LENGTH_LONG).setAction("Ok", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        irUltimoVisitado();
-                    }
-                }).show();*/
+
                 mainPresenter.clickFavoriteButton();
             }
         });
