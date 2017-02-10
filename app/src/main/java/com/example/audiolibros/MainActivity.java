@@ -18,12 +18,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.audiolibros.fragments.DetalleFragment;
 import com.example.audiolibros.fragments.SelectorFragment;
 
-import static com.example.audiolibros.LibroSharedPreferenceStorage.*;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MainPresenter.View {
     private RecyclerView recyclerView;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TabLayout tabs;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
-
+    private String name;
 
 
     @Override
@@ -141,6 +141,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         tabs = (TabLayout) findViewById(R.id.tabs);
 
+        name = libroStorage.getUserName();
+        View headerLayout = navigationView.getHeaderView(0);
+        TextView txtName = (TextView) headerLayout.findViewById(R.id.txtName);
+        txtName.setText(String.format(getString(R.string.wellcome_message), name));
+
 
     }
 
@@ -149,7 +154,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void mostrarNoUltimaVisita() { Toast.makeText(this, "Sin última vista",Toast.LENGTH_LONG).show(); }
+    public void mostrarNoUltimaVisita() {
+        Toast.makeText(this, "Sin última vista", Toast.LENGTH_LONG).show();
+    }
 
 
     public void mostrarFragmentDetalle(int id) {

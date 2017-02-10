@@ -51,6 +51,11 @@ public class LibroSharedPreferenceStorage implements LibroStorage{
         editor.commit();
 
     }
+
+    public String getUserName(){
+        return getPreference().getString("name", null);
+    }
+
 }
 
 
