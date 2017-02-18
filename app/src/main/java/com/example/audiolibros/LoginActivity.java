@@ -1,6 +1,6 @@
 package com.example.audiolibros;
 
-import android.app.Dialog;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
+
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ResultCodes;
@@ -20,13 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
-import java.util.Vector;
-import java.util.concurrent.TimeoutException;
 
-import io.fabric.sdk.android.services.concurrency.AsyncTask;
-
-import static android.R.attr.data;
-import static java.lang.Thread.sleep;
 
 
 /**
@@ -77,11 +71,11 @@ public class LoginActivity extends AppCompatActivity {
         } else {
 
             Log.d("LoginActivity", "va a llamar al startActivityForResult");
-            startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder()
-                    .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER)
-                            .build(), new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
-                    //new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build(),
-                    // new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build()))
+            startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().setProviders(Arrays.asList(
+                    new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                    new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+                    new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
+                    //new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build()))
                     .setIsSmartLockEnabled(false).build(), RC_SIGN_IN);
 
 
