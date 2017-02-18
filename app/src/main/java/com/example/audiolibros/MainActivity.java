@@ -3,6 +3,7 @@ package com.example.audiolibros;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -24,11 +25,14 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.example.audiolibros.fragments.DetalleFragment;
 import com.example.audiolibros.fragments.SelectorFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MainPresenter.View {
@@ -39,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private LibrosSingleton librosSingleton;
     private BooksRepository booksRepository;
     private LibroStorage libroStorage;
+    private VolleySingleton volleySingleton;
 
 
     //Ocultar elementos interfaz de usuario
@@ -151,6 +156,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View headerLayout = navigationView.getHeaderView(0);
         TextView txtName = (TextView) headerLayout.findViewById(R.id.txtName);
         txtName.setText(String.format(getString(R.string.wellcome_message), name));
+
+        FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
+        Uri urlImagen = usuario.getPhotoUrl();
+        if (urlImagen != null) {
+            NetworkImageView fotoUsuario = (NetworkImageView) headerLayout.findViewById(R.id.userImageView);
+            volleySingleton = VolleySingleton.getInstance(this);
+           fotoUsuario.setImageUrl(urlImagen.toString(), volleySingleton.getLectorImagenes());
+        }
 
 
     }
