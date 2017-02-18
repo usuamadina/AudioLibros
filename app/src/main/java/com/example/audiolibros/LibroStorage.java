@@ -11,5 +11,6 @@ public interface LibroStorage {
     int getLastBook();
     void saveLastBook(int id);
     String getUserName();
-    void removeEmailProvider(String provider, String email, String name);
+    void removeProvider(String provider, String email, String name);
+    void saveProvider(String provider, String email, String name);
 }

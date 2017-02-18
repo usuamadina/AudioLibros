@@ -57,11 +57,20 @@ public class LibroSharedPreferenceStorage implements LibroStorage {
         return getPreference().getString("name", null);
     }
 
-    public void removeEmailProvider(String provider, String email, String name) {
+    public void removeProvider(String provider, String email, String name) {
         SharedPreferences pref = instance.getPreference();
         pref.edit().remove(provider).commit();
         pref.edit().remove(email).commit();
         pref.edit().remove(name).commit();
+    }
+
+    public void saveProvider (String provider, String email, String name){
+        SharedPreferences pref = instance.getPreference();
+        pref.edit().putString("provider", provider).commit();
+        pref.edit().putString("name", name).commit();
+        if (email != null) {
+            pref.edit().putString("email", email).commit();
+        }
     }
 
 

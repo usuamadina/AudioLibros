@@ -33,9 +33,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseAuthSingleton firebaseAuthSingleton;
     private FirebaseUser currentUser;
-    private AlertDialog alertDialog;
     private Boolean onActivityResultBack = false;
-    private Context context;
+    private LibroSharedPreferenceStorage pref;
 
 
     private String provider;
@@ -48,7 +47,8 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuthSingleton.getInstance();
         auth = firebaseAuthSingleton.getAuth();
         onActivityResultBack = false;
-        context = LoginActivity.this;
+        pref = LibroSharedPreferenceStorage.getInstance(this);
+
 
         doLogin();
     }
@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
     private void doLogin() {
         currentUser = auth.getCurrentUser();
 
-        if (currentUser != null & !onActivityResultBack) {
+        if (currentUser != null) {
             getCurrentUserData();
             if (provider.equals("password") && !currentUser.isEmailVerified()) {
                 Log.d("LoginActivity", "notificación verificar");
@@ -74,8 +74,8 @@ public class LoginActivity extends AppCompatActivity {
             startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().setProviders(Arrays.asList(
                     new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                     new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
-                    new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
-                    //new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build()))
+                    new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build(),
+                    new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build()))
                     .setIsSmartLockEnabled(false).build(), RC_SIGN_IN);
 
 
@@ -103,12 +103,7 @@ public class LoginActivity extends AppCompatActivity {
         String name = currentUser.getDisplayName();
         String email = currentUser.getEmail();
         provider = currentUser.getProviders().get(0);
-        SharedPreferences pref = getSharedPreferences("com.example.audiolibros_internal", MODE_PRIVATE);
-        pref.edit().putString("provider", provider).commit();
-        pref.edit().putString("name", name).commit();
-        if (email != null) {
-            pref.edit().putString("email", email).commit();
-        }
+        pref.saveProvider(provider,email,name);
     }
 
     private void sendVerificationNotify() {
@@ -138,9 +133,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Log.d("Firebase", "cerrando sesión");
-                LibroSharedPreferenceStorage pref = LibroSharedPreferenceStorage.getInstance(context);
 
-                pref.removeEmailProvider("provider","email", "name");
+                pref.removeProvider("provider","email", "name");
 
                 Intent i = new Intent(LoginActivity.this, LoginActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -150,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    @Override
+ /*   @Override
     protected void onDestroy() {
         try {
             if (alertDialog != null && alertDialog.isShowing()) {
@@ -160,6 +154,6 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         super.onDestroy();
-    }
+    }*/
 
 }
