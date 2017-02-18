@@ -60,7 +60,7 @@ public class SplashScreenActivity extends Activity {
                 finish();
                 avi.hide();
                 Intent mainIntent = new Intent().setClass(
-                        SplashScreenActivity.this, MainActivity.class);
+                        SplashScreenActivity.this, LoginActivity.class);
                 Bundle bndlanimation =
                         ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.zoom,R.anim.menguar).toBundle();
                 startActivity(mainIntent, bndlanimation);

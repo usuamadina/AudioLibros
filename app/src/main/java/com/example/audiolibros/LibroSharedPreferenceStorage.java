@@ -9,7 +9,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by usuwi on 29/01/2017.
  */
 
-public class LibroSharedPreferenceStorage implements LibroStorage{
+public class LibroSharedPreferenceStorage implements LibroStorage {
     public static final String PREF_AUDIOLIBROS = "com.example.audiolibros_internal";
     public static final String KEY_ULTIMO_LIBRO = "ultimo";
     private final Context context;
@@ -21,7 +21,7 @@ public class LibroSharedPreferenceStorage implements LibroStorage{
     private static LibroSharedPreferenceStorage instance;
 
     public static LibroSharedPreferenceStorage getInstance(Context context) {
-        if (instance == null){
+        if (instance == null) {
             synchronized (LibroSharedPreferenceStorage.class) {
                 if (instance == null) {
                     instance = new LibroSharedPreferenceStorage(context);
@@ -43,20 +43,28 @@ public class LibroSharedPreferenceStorage implements LibroStorage{
         return getPreference().getInt(KEY_ULTIMO_LIBRO, -1);
     }
 
-    public void saveLastBook(int id){
-        SharedPreferences pref = context.getSharedPreferences(
-                "com.example.audiolibros_internal", MODE_PRIVATE);
+    public void saveLastBook(int id) {
+
+        SharedPreferences pref = instance.getPreference();
         SharedPreferences.Editor editor = pref.edit();
         editor.putInt("ultimo", id);
         editor.commit();
 
     }
 
-    public String getUserName(){
+
+    public String getUserName() {
         return getPreference().getString("name", null);
     }
 
-}
+    public void removeEmailProvider(String provider, String email, String name) {
+        SharedPreferences pref = instance.getPreference();
+        pref.edit().remove(provider).commit();
+        pref.edit().remove(email).commit();
+        pref.edit().remove(name).commit();
+    }
 
+
+}
 
 

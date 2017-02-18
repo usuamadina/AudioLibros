@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -229,6 +230,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
+                    Log.d("Firebase", "cerrando sesión");
                     SharedPreferences pref = getSharedPreferences("com.example.audiolibros_internal", MODE_PRIVATE);
                     pref.edit().remove("provider").commit();
                     pref.edit().remove("email").commit();
