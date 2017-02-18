@@ -9,6 +9,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -67,6 +68,7 @@ public class CustomLoginActivity extends FragmentActivity implements View.OnClic
     private TwitterLoginButton btnTwitter;
     private FirebaseAuth auth;
     private FirebaseAuthSingleton firebaseAuthSingleton;
+    private Button btnFirebaseUI;
 
 
     private static final int RC_GOOGLE_SIGN_IN = 123;
@@ -143,6 +145,11 @@ public class CustomLoginActivity extends FragmentActivity implements View.OnClic
         TwitterAuthConfig authConfig = new TwitterAuthConfig(getString(R.string.twitter_consumer_key), getString(R.string.twitter_consumer_secret));
         Fabric.with(this, new Twitter(authConfig));
 
+        //Botón Autenticación FirebaseUI
+        btnFirebaseUI = (Button)findViewById(R.id.btnFirebaseUI);
+        btnFirebaseUI.setOnClickListener(this);
+
+
         doLogin();
     }
 
@@ -158,6 +165,11 @@ public class CustomLoginActivity extends FragmentActivity implements View.OnClic
             case R.id.btnTwitter:
                 showProgress();
                 break;
+            case R.id.btnFirebaseUI:
+                Intent i = new Intent(this, LoginActivity.class);
+              //  i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
+              //  finish();
         }
     }
 

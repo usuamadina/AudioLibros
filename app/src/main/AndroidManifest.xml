@@ -18,12 +18,8 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".PreferenciasActivity" />
-        <activity android:name=".CustomLoginActivity">
-            <!--intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter-->
-        </activity>
+        <activity android:name=".CustomLoginActivity"/>
+        <activity android:name=".LoginActivity"/>
 
         <receiver android:name=".WidgetProvider">
             <intent-filter>

@@ -15,4 +15,5 @@
   <color name="divider">#BDBDBD</color>
   <color name="splash">#4B5AA7</color>
   <color name="fondoWidget">#6e000000</color>
+  <color name="firebase_color">#FFCB2B</color>
 </resources>

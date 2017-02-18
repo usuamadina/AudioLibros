@@ -88,6 +88,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnFirebaseUI"
+            android:text="@string/button_firebaseUI_authentication"
+            android:layout_margin="8dp"
+            android:background="@color/firebase_color"/>
     </LinearLayout>
     <ProgressBar
         android:id="@+id/progressBar"
