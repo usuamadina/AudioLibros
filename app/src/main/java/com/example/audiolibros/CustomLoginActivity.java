@@ -6,26 +6,37 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.facebook.CallbackManager;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 /**
  * Created by usuwi on 18/02/2017.
  */
 
-public class CustomLoginActivity extends Activity implements View.OnClickListener {
+public class CustomLoginActivity extends FragmentActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     private LinearLayout layoutSocialButtons;
     private LinearLayout layoutEmailButtons;
     private TextInputLayout wrapperPassword;
@@ -41,7 +52,10 @@ public class CustomLoginActivity extends Activity implements View.OnClickListene
     private FirebaseAuthSingleton firebaseAuthSingleton;
     private FirebaseUser currentUser;
 
-    protected void onCreate(Bundle savedInstanceState) {
+    private static final int RC_GOOGLE_SIGN_IN = 123;
+    private GoogleApiClient googleApiClient;
+
+      protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_login);
         btnGoogle = (SignInButton) findViewById(R.id.btnGoogle);
@@ -61,17 +75,58 @@ public class CustomLoginActivity extends Activity implements View.OnClickListene
         firebaseAuthSingleton = new FirebaseAuthSingleton();
         firebaseAuthSingleton.getInstance();
         auth = firebaseAuthSingleton.getAuth();
+
+        //Google
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
+
         doLogin();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.btnGoogle:
+                googleLogin();
+                break;
         }
+    }
+
+    public void googleLogin() {
+        showProgress();
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
+    }
+
+    private void googleAuth(GoogleSignInAccount acct) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        auth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()) {
+                    hideProgress();
+                    showSnackbar(task.getException().getLocalizedMessage());
+                } else {
+                    doLogin();
+                }
+            }
+        });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RC_GOOGLE_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                GoogleSignInAccount account = result.getSignInAccount();
+                googleAuth(account);
+            } else {
+                hideProgress();
+                showSnackbar(getResources().getString(R.string.error_google));
+            }
+        }
     }
 
     private void showSnackbar(String message) {
@@ -112,7 +167,7 @@ public class CustomLoginActivity extends Activity implements View.OnClickListene
                 pref.edit().putString("email", email).commit();
             }*/
 
-            pref.saveProvider(provider,name,email);
+            pref.saveProvider(provider, name, email);
 
             Intent i = new Intent(this, MainActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -140,5 +195,11 @@ public class CustomLoginActivity extends Activity implements View.OnClickListene
         } else {
             wrapperEmail.setError(getString(R.string.error_empty));
         }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        showSnackbar(getString(R.string.error_connection_failed));
+
     }
 }
