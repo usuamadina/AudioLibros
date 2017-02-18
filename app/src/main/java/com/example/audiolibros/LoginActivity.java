@@ -33,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseAuthSingleton firebaseAuthSingleton;
     private FirebaseUser currentUser;
-    private Boolean onActivityResultBack = false;
     private LibroSharedPreferenceStorage pref;
 
 
@@ -46,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuthSingleton = new FirebaseAuthSingleton();
         firebaseAuthSingleton.getInstance();
         auth = firebaseAuthSingleton.getAuth();
-        onActivityResultBack = false;
         pref = LibroSharedPreferenceStorage.getInstance(this);
 
 
