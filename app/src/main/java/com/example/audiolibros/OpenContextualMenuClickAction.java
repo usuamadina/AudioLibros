@@ -73,7 +73,6 @@ public class OpenContextualMenuClickAction implements ClickAction {
                     case 2: //Insertar
                          Libro book = adapter.getItemById(posicion);
                          adapter.insertar(book);
-                       // adapter.insertar(adapter.getItem(recyclerView.getChildAdapterPosition(view)));
                         adapter.notifyItemInserted(adapter.getItemCount()+1);
                         Snackbar.make(view, "Libro insertado", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
                             @Override

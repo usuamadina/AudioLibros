@@ -161,25 +161,6 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
 
         super.onBackPressed();
-       /* Log.d("onBackPressed","true");
-        Intent i = new Intent(this, CustomLoginActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(i);
-
-        finish();*/
         //NavUtils.navigateUpFromSameTask(this);
     }
 }
-
- /*   @Override
-    protected void onDestroy() {
-        try {
-            if (alertDialog != null && alertDialog.isShowing()) {
-                alertDialog.dismiss();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        super.onDestroy();
-    }*/
-
