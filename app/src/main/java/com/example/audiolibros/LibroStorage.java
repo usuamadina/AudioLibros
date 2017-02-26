@@ -8,8 +8,8 @@ import android.content.SharedPreferences;
 
 public interface LibroStorage {
     boolean hasLastBook();
-    int getLastBook();
-    void saveLastBook(int id);
+    String getLastBook();
+    void saveLastBook(String key);
     String getUserName();
     void removeProvider(String provider, String email, String name);
     void saveProvider(String provider, String email, String name);

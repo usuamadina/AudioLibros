@@ -9,11 +9,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.example.audiolibros.LecturasSingleton;
 import com.example.audiolibros.Libro;
 import com.example.audiolibros.LibrosSingleton;
 import com.example.audiolibros.MainActivity;
@@ -26,38 +29,68 @@ import java.io.IOException;
  * Created by usuwi on 21/12/2016.
  */
 
-public class DetalleFragment extends Fragment implements View.OnTouchListener, MediaPlayer.OnPreparedListener, MediaController.MediaPlayerControl {
+public class DetalleFragment extends Fragment implements CompoundButton.OnCheckedChangeListener, View.OnTouchListener, MediaPlayer.OnPreparedListener, MediaController.MediaPlayerControl {
     public static String ARG_ID_LIBRO = "id_libro";
     MediaPlayer mediaPlayer;
     MediaController mediaController;
     LibrosSingleton librosSingleton;
     VolleySingleton volleySingleton;
+    ToggleButton toggleButton;
+    private LecturasSingleton lecturasSingleton;
+    private String key;
+
 
     @Override
     public View onCreateView(LayoutInflater inflador, ViewGroup contenedor, Bundle savedInstanceState) {
         librosSingleton = LibrosSingleton.getInstance(getContext());
         volleySingleton = VolleySingleton.getInstance(getContext());
+        lecturasSingleton = LecturasSingleton.getInstance(getContext());
+
+
         View vista = inflador.inflate(R.layout.fragment_detalle, contenedor, false);
+        toggleButton = (ToggleButton) vista.findViewById(R.id.leidoButton);
+
+
+
         Bundle args = getArguments();
         if (args != null) {
-            int position = args.getInt(ARG_ID_LIBRO);
-            ponInfoLibro(position, vista);
+            key = args.getString(ARG_ID_LIBRO);
+            ponInfoLibro(key, vista);
         } else {
-            ponInfoLibro(0, vista);
+            ponInfoLibro("", vista);
         }
+
+
         return vista;
+
+
+    }
+
+    public void ponInfoLibro(String key) {
+        ponInfoLibro(key, getView());
+                       /*(new CompoundButton.OnCheckedChangeListener(){
+            public void onCheckedChanged
+
+                    (CompoundButton buttonView, boolean isChecked) {
+
+            }});*/
+
+
     }
 
 
-    private void ponInfoLibro(int id, View vista) {
+    private void ponInfoLibro(String key, View vista) {
+        Libro libro = librosSingleton.getAdaptador().getItemByKey(key);
+        ((TextView) vista.findViewById(R.id.titulo)).setText(libro.getTitulo());
+        ((TextView) vista.findViewById(R.id.autor)).setText(libro.getAutor());
 
-        Libro libro = librosSingleton.getVectorLibros().elementAt(id);
-        ((TextView) vista.findViewById(R.id.titulo)).setText(libro.titulo);
-        ((TextView) vista.findViewById(R.id.autor)).setText(libro.autor);
+        Log.d("DetalleFragment", "libroleido = " + lecturasSingleton.libroLeido(key));
+        toggleButton.setChecked(lecturasSingleton.libroLeido(key));
 
-        ((NetworkImageView) vista.findViewById(R.id.portada)).setImageUrl(libro.urlImagen, volleySingleton.getLectorImagenes());
+        ((NetworkImageView) vista.findViewById(R.id.portada)).setImageUrl(libro.getUrlImagen(), volleySingleton.getLectorImagenes());
 
         vista.setOnTouchListener(this);
+        toggleButton.setOnCheckedChangeListener(this);
 
         if (mediaPlayer != null) {
             mediaPlayer.release();
@@ -65,7 +98,7 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnPreparedListener(this);
         mediaController = new MediaController(getActivity());
-        Uri audio = Uri.parse(libro.urlAudio);
+        Uri audio = Uri.parse(libro.getUrlAudio());
         try {
             mediaPlayer.setDataSource(getActivity(), audio);
             mediaPlayer.prepareAsync();
@@ -75,9 +108,9 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
 
     }
 
-    public void ponInfoLibro(int id) {
+   /* public void ponInfoLibro(int id) {
         ponInfoLibro(id, getView());
-    }
+    }*/
 
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
@@ -178,6 +211,15 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
     public int getAudioSessionId() {
         return 0;
     }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        Log.d("ButtonToogle", "checked = " + toggleButton.isChecked());
+
+        lecturasSingleton.leidoPorMi(key, isChecked);
+    }
+
+
 }
 
 

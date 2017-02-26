@@ -5,8 +5,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.Vector;
 
@@ -17,24 +20,28 @@ import java.util.Vector;
 public class OpenContextualMenuClickAction implements ClickAction {
 
     private final Activity activity;
-    private Vector<Libro> vectorLibros;
+    private DatabaseReference reference;
     private AdaptadorLibrosFiltro adapter;
+    private RecyclerView recyclerView;
     private View view;
 
-    public OpenContextualMenuClickAction(Activity activity, Vector<Libro> vectorLibros, AdaptadorLibrosFiltro adapter, View v) {
+    public OpenContextualMenuClickAction(Activity activity, DatabaseReference reference, AdaptadorLibrosFiltro adapter, View v) {
         this.activity = activity;
-        this.vectorLibros = vectorLibros;
+        this.reference = reference;
         this.adapter = adapter;
         this.view = v;
 
     }
 
+    @Override
+    public void execute (String key){
+
+    }
+
 
     @Override
-    public void execute(int position) {
-        Log.d("LongClick posicion:", String.valueOf(position));
-
-        final int id = position;
+    public void execute(final int posicion) {
+       // Log.d("LongClick posicion:", String.valueOf(position));
 
         AlertDialog.Builder menu = new AlertDialog.Builder(activity);
         CharSequence[] opciones = {"Compartir", "Borrar ", "Insertar"};
@@ -42,11 +49,11 @@ public class OpenContextualMenuClickAction implements ClickAction {
             public void onClick(DialogInterface dialog, int opcion) {
                 switch (opcion) {
                     case 0: //Compartir
-                        Libro libro = vectorLibros.elementAt(id);
+                        Libro libro = adapter.getItemById(posicion);
                         Intent i = new Intent(Intent.ACTION_SEND);
                         i.setType("text/plain");
-                        i.putExtra(Intent.EXTRA_SUBJECT, libro.titulo);
-                        i.putExtra(Intent.EXTRA_TEXT, libro.urlAudio);
+                        i.putExtra(Intent.EXTRA_SUBJECT, libro.getTitulo());
+                        i.putExtra(Intent.EXTRA_TEXT, libro.getUrlAudio());
 
                         activity.startActivity(Intent.createChooser(i, "Compartir"));
                         break;
@@ -57,15 +64,17 @@ public class OpenContextualMenuClickAction implements ClickAction {
                                        /* Animation anim = AnimationUtils.loadAnimation(actividad, R.anim.menguar);
                                         anim.setAnimationListener(SelectorFragment.this);
                                         v.startAnimation(anim);*/
-                                adapter.borrar(id);
-                                adapter.notifyItemRemoved(id);
+                                adapter.borrar(posicion);
+                                adapter.notifyItemRemoved(posicion);
 
                             }
                         }).show();
                         break;
                     case 2: //Insertar
-                        adapter.insertar(adapter.getItem(id));
-                        adapter.notifyItemInserted(0);
+                         Libro book = adapter.getItemById(posicion);
+                         adapter.insertar(book);
+                       // adapter.insertar(adapter.getItem(recyclerView.getChildAdapterPosition(view)));
+                        adapter.notifyItemInserted(adapter.getItemCount()+1);
                         Snackbar.make(view, "Libro insertado", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

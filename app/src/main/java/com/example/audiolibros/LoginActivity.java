@@ -1,12 +1,11 @@
 package com.example.audiolibros;
 
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -18,9 +17,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
-
 
 
 /**
@@ -55,9 +58,10 @@ public class LoginActivity extends AppCompatActivity {
         currentUser = auth.getCurrentUser();
 
         if (currentUser != null) {
+            guardarUsuario(currentUser);
             getCurrentUserData();
             if (provider.equals("password") && !currentUser.isEmailVerified()) {
-                Log.d("LoginActivity", "notificación verificar");
+                Log.d("LoginActivity", " envio notificación verificación");
                 sendVerificationNotify();
 
 
@@ -85,8 +89,11 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("onActivityResult : ", "requestCode =" + requestCode);
+        Log.d("onActivtyResult", "resultCode = " + resultCode);
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == ResultCodes.OK) {
+                Log.d("onActivityResult : ", "entra en los dos if");
                 Intent i = new Intent(this, LoginActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
@@ -94,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         }
+
     }
 
 
@@ -101,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
         String name = currentUser.getDisplayName();
         String email = currentUser.getEmail();
         provider = currentUser.getProviders().get(0);
-        pref.saveProvider(provider,email,name);
+        pref.saveProvider(provider, email, name);
     }
 
     private void sendVerificationNotify() {
@@ -132,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 Log.d("Firebase", "cerrando sesión");
 
-                pref.removeProvider("provider","email", "name");
+                pref.removeProvider("provider", "email", "name");
 
                 Intent i = new Intent(LoginActivity.this, LoginActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -141,6 +149,27 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    void guardarUsuario(final FirebaseUser user) {
+        FirebaseDatabaseSingleton firebaseDatabaseSingleton = FirebaseDatabaseSingleton.getInstance();
+        DatabaseReference userReference = firebaseDatabaseSingleton.getUsersReference().child(user.getUid());
+        userReference.setValue(new User(user.getDisplayName(), user.getEmail()));
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        super.onBackPressed();
+       /* Log.d("onBackPressed","true");
+        Intent i = new Intent(this, CustomLoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
+
+        finish();*/
+        //NavUtils.navigateUpFromSameTask(this);
+    }
+}
 
  /*   @Override
     protected void onDestroy() {
@@ -154,4 +183,3 @@ public class LoginActivity extends AppCompatActivity {
         super.onDestroy();
     }*/
 
-}

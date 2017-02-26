@@ -11,8 +11,8 @@ public class SaveLastBook {
         this.booksRepository = booksRepository;
     }
 
-    public void execute(int id) {
-        booksRepository.saveLastBook(id);
+    public void execute(String key) {
+        booksRepository.saveLastBook(key);
     }
 
 }

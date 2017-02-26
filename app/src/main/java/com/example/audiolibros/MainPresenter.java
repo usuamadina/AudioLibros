@@ -27,13 +27,13 @@ public class MainPresenter {
         }
     }
 
-    public void openDetalle(int id) {
-        saveLastBook.execute(id);
-        view.mostrarFragmentDetalle(id);
+    public void openDetalle(String key) {
+        saveLastBook.execute(key);
+        view.mostrarFragmentDetalle(key);
     }
 
     public interface View {
-        void mostrarFragmentDetalle(int lastBook);
+        void mostrarFragmentDetalle(String lastBook);
         void mostrarNoUltimaVisita();
     }
 }

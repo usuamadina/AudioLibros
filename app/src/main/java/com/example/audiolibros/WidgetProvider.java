@@ -29,7 +29,7 @@ public class WidgetProvider extends AppWidgetProvider {
         //Obtenemos ultimo libro
         SharedPreferences prefs = context.getSharedPreferences("com.example.audioLibros_internal", Context.MODE_PRIVATE);
         int id = prefs.getInt("ultimo", 0);
-        Libro ultimoLibro = librosSingleton.getVectorLibros().elementAt(id);
+        Libro ultimoLibro = librosSingleton.getAdaptador().getItemById(id);
               //  ((Aplicacion) context.getApplicationContext()).getVectorLibros().elementAt(id);
 
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
@@ -39,8 +39,8 @@ public class WidgetProvider extends AppWidgetProvider {
 
         if (!(ultimoLibro == Libro.LIBRO_EMPTY)) {
 
-            String autor = ultimoLibro.autor;
-            String titulo = ultimoLibro.titulo;
+            String autor = ultimoLibro.getAutor();
+            String titulo = ultimoLibro.getTitulo();
 
 
             remoteViews.setTextViewText(R.id.autorWidget,autor);

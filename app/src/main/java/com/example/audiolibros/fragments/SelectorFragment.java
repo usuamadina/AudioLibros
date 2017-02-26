@@ -26,6 +26,8 @@ import android.widget.Toast;
 
 import com.example.audiolibros.AdaptadorLibros;
 import com.example.audiolibros.AdaptadorLibrosFiltro;
+import com.example.audiolibros.FirebaseDatabaseSingleton;
+import com.example.audiolibros.LecturasSingleton;
 import com.example.audiolibros.Libro;
 import com.example.audiolibros.LibrosSingleton;
 import com.example.audiolibros.MainActivity;
@@ -33,6 +35,7 @@ import com.example.audiolibros.OpenContextualMenuClickAction;
 import com.example.audiolibros.OpenDetailClickAction;
 import com.example.audiolibros.R;
 import com.example.audiolibros.SearchObservable;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.Vector;
 
@@ -46,19 +49,27 @@ public class SelectorFragment extends Fragment implements Animation.AnimationLis
     private Activity actividad;
     private RecyclerView recyclerView;
     private AdaptadorLibrosFiltro adaptador;
-    private Vector<Libro> vectorLibros;
+  //  private Vector<Libro> vectorLibros;
     private LibrosSingleton librosSingleton;
+    private DatabaseReference booksReference;
+    private FirebaseDatabaseSingleton firebaseDatabaseSingleton;
+    private LecturasSingleton lecturasSingleton;
+
 
     @Override
     public void onAttach(Context contexto){
         super.onAttach(contexto);
+        firebaseDatabaseSingleton = FirebaseDatabaseSingleton.getInstance();
         librosSingleton = LibrosSingleton.getInstance(getContext());
+        booksReference = firebaseDatabaseSingleton.getUsersReference();
+        lecturasSingleton = LecturasSingleton.getInstance(getContext());
+
 
         if (contexto instanceof Activity) {
             this.actividad = (Activity) contexto;
 
             adaptador = librosSingleton.getAdaptador();
-            vectorLibros = librosSingleton.getVectorLibros();
+           // vectorLibros = librosSingleton.getVectorLibros();
         }
     }
 
@@ -77,8 +88,11 @@ public class SelectorFragment extends Fragment implements Animation.AnimationLis
         recyclerView.setItemAnimator(animator);
 
 
-        adaptador.setClickAction(new OpenDetailClickAction((MainActivity)getActivity()));
-        adaptador.setLongClickAction(new OpenContextualMenuClickAction(actividad,vectorLibros,adaptador,vista));
+       // adaptador.setClickAction(new OpenDetailClickAction((MainActivity)getActivity())
+        //((MainActivity) getActivity()).mostrarDetalle(adaptador.getItemKey(recyclerView.getChildAdapterPosition(vista)));
+
+        adaptador.setClickAction(new OpenDetailClickAction(getActivity()));
+        adaptador.setLongClickAction(new OpenContextualMenuClickAction(actividad,booksReference,adaptador,vista));
 
         return vista;
 
@@ -128,7 +142,17 @@ public class SelectorFragment extends Fragment implements Animation.AnimationLis
     @Override
     public void onResume() {
         ((MainActivity) getActivity()).mostrarElementos(true);
+        adaptador.activaEscuchadorLibros();
+        lecturasSingleton.activaEscuchadorMisLecturas();
+
+
         super.onResume();
+    }
+
+    @Override public void onPause(){
+        super.onPause();
+        adaptador.desactivaEscuchadorLibros();
+        lecturasSingleton.desactivaEscuchadorMisLecturas();
     }
 
     @Override

@@ -11,7 +11,7 @@ public class BooksRepository {
         this.libroStorage = libroStorage;
     }
 
-    public int getLastBook() {
+    public String getLastBook() {
         return libroStorage.getLastBook();
     }
 
@@ -19,7 +19,7 @@ public class BooksRepository {
         return libroStorage.hasLastBook();
     }
 
-    public void saveLastBook(int id){
-        libroStorage.saveLastBook(id);
+    public void saveLastBook(String key){
+        libroStorage.saveLastBook(key);
     }
 }

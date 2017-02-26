@@ -19,7 +19,11 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".PreferenciasActivity" />
         <activity android:name=".CustomLoginActivity"/>
-        <activity android:name=".LoginActivity"/>
+        <activity android:name=".LoginActivity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.example.audiolibros.CustomLoginActivity" />
+        </activity>
 
         <receiver android:name=".WidgetProvider">
             <intent-filter>

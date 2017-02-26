@@ -59,5 +59,30 @@
         app:colorRegla="@color/primary"
         app:colorTexto="@color/secondary_text"
         android:layout_below="@+id/portada"/>
+
+    <TextView
+        android:text="Leido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/portada"
+        android:layout_toEndOf="@+id/portada"
+        android:id="@+id/textView2"
+        android:textColor="@color/authui_inputTextColorDark"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        android:textStyle="normal|bold"
+        android:layout_below="@+id/autor"
+        android:gravity="center" />
+
+    <ToggleButton
+        android:id="@+id/leidoButton"
+        android:text="ToggleButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/portada"
+        android:layout_toEndOf="@+id/portada" />
 </RelativeLayout>
 

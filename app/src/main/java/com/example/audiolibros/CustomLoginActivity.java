@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +41,10 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.TwitterAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -146,7 +151,7 @@ public class CustomLoginActivity extends FragmentActivity implements View.OnClic
         Fabric.with(this, new Twitter(authConfig));
 
         //Botón Autenticación FirebaseUI
-        btnFirebaseUI = (Button)findViewById(R.id.btnFirebaseUI);
+        btnFirebaseUI = (Button) findViewById(R.id.btnFirebaseUI);
         btnFirebaseUI.setOnClickListener(this);
 
 
@@ -167,9 +172,9 @@ public class CustomLoginActivity extends FragmentActivity implements View.OnClic
                 break;
             case R.id.btnFirebaseUI:
                 Intent i = new Intent(this, LoginActivity.class);
-              //  i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
-              //  finish();
+                //  finish();
         }
     }
 
@@ -267,9 +272,13 @@ public class CustomLoginActivity extends FragmentActivity implements View.OnClic
         progressBar.setVisibility(View.GONE);
     }
 
+
+
     private void doLogin() {
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
+            guardarUsuario(currentUser);
+            Log.d("doLoginCustom", "currentUser " + currentUser);
             String name = currentUser.getDisplayName();
             String email = currentUser.getEmail();
             String provider = currentUser.getProviders().get(0);
@@ -278,20 +287,14 @@ public class CustomLoginActivity extends FragmentActivity implements View.OnClic
             if (name == null) {
                 name = email;
             }
-
-            //TODO solucionar esta parte
-           /* pref.edit().putString("name", name).commit();
-            if (email != null) {
-                pref.edit().putString("email", email).commit();
-            }*/
-
             pref.saveProvider(provider, name, email);
-
             Intent i = new Intent(this, MainActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
-            finish();
+
         }
+
+
     }
 
     public void signin(View v) {
@@ -320,4 +323,15 @@ public class CustomLoginActivity extends FragmentActivity implements View.OnClic
         showSnackbar(getString(R.string.error_connection_failed));
 
     }
+
+
+    void guardarUsuario(final FirebaseUser user) {
+        FirebaseDatabaseSingleton firebaseDatabaseSingleton = FirebaseDatabaseSingleton.getInstance();
+        DatabaseReference userReference = firebaseDatabaseSingleton.getUsersReference().child(user.getUid());
+        userReference.setValue(new User(user.getDisplayName(), user.getEmail()));
+
+    }
+
+
+
 }

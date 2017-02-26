@@ -1,6 +1,9 @@
 package com.example.audiolibros;
 
 import android.content.Context;
+import android.util.Log;
+
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.Vector;
 import java.util.concurrent.SynchronousQueue;
@@ -13,28 +16,32 @@ public class LibrosSingleton {
     private static LibrosSingleton instance;
     private Context context;
 
-    private Vector<Libro> vectorLibros = new Vector<Libro>();
     private AdaptadorLibrosFiltro adaptador;
-
+    private FirebaseDatabaseSingleton firebaseDatabaseSingleton;
+    private DatabaseReference reference;
+    private Vector<Libro> vectorLibros = new Vector<Libro>();
 
 
     public static LibrosSingleton getInstance(Context context) {
-        if (instance == null){
-            synchronized(LibrosSingleton.class){
-                if (instance == null){
+        if (instance == null) {
+            synchronized (LibrosSingleton.class) {
+                if (instance == null) {
                     instance = new LibrosSingleton(context);
-                    instance.inicializa();
+
                 }
 
             }
+            instance.inicializa();
         }
 
         return instance;
     }
 
-    private void inicializa(){
-        vectorLibros = Libro.ejemploLibros();
-        adaptador= new AdaptadorLibrosFiltro(context,vectorLibros);
+    private void inicializa() {
+
+        firebaseDatabaseSingleton = FirebaseDatabaseSingleton.getInstance();
+        reference = firebaseDatabaseSingleton.getBooksReference();
+        adaptador = new AdaptadorLibrosFiltro(context, reference);
     }
 
     private LibrosSingleton(Context context) {
@@ -46,7 +53,5 @@ public class LibrosSingleton {
         return adaptador;
     }
 
-    public Vector<Libro> getVectorLibros() {
-        return vectorLibros;
-    }
+
 }

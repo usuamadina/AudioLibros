@@ -33,6 +33,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MainPresenter.View {
@@ -44,6 +45,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private BooksRepository booksRepository;
     private LibroStorage libroStorage;
     private VolleySingleton volleySingleton;
+    private FirebaseDatabaseSingleton firebaseDatabaseSingleton;
+    private DatabaseReference booksReference;
+
 
 
     //Ocultar elementos interfaz de usuario
@@ -59,8 +63,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        firebaseDatabaseSingleton = FirebaseDatabaseSingleton.getInstance();
+        booksReference = firebaseDatabaseSingleton.getBooksReference();
+
+
         librosSingleton = LibrosSingleton.getInstance(this);
-        adaptador = librosSingleton.getAdaptador();
+
         libroStorage = LibroSharedPreferenceStorage.getInstance(this);
         booksRepository = new BooksRepository(libroStorage);
 
@@ -166,11 +174,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
+        adaptador = librosSingleton.getAdaptador();
+
+
+
     }
 
-    public void mostrarDetalle(int id) {
-        mainPresenter.openDetalle(id);
+
+    public void mostrarDetalle(String key) {
+        mainPresenter.openDetalle(key);
     }
+
+   /* @Override
+    public void mostrarFragmentDetalle(int lastBook) {
+        mainPresenter.openDetalle(lastBook);
+
+    }*/
 
     @Override
     public void mostrarNoUltimaVisita() {
@@ -178,14 +197,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    public void mostrarFragmentDetalle(int id) {
+    public void mostrarFragmentDetalle(String key) {
         DetalleFragment detalleFragment = (DetalleFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_detalle);
         if (detalleFragment != null) {
-            detalleFragment.ponInfoLibro(id);
+            detalleFragment.ponInfoLibro(key);
         } else {
             DetalleFragment nuevoFragment = new DetalleFragment();
             Bundle args = new Bundle();
-            args.putInt(DetalleFragment.ARG_ID_LIBRO, id);
+            args.putString(DetalleFragment.ARG_ID_LIBRO, key);
             nuevoFragment.setArguments(args);
             FragmentTransaction transaccion = getSupportFragmentManager()
                     .beginTransaction();
@@ -223,8 +242,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mainPresenter.clickFavoriteButton();
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
+   @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.nav_todos) {

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!--Con tonos Azules-->
-  <!--color name="primary">#3F51B5</color>
-  <color name="primary_dark">#303F9F</color-->
+    <!--Con tonos Azules-->
+    <!--color name="primary">#3F51B5</color>
+    <color name="primary_dark">#303F9F</color-->
 
-<!--Con tonos petroleo-->
-  <color name="primary">#3F51B5</color>
-  <color name="primary_dark">#303F9F</color>
-  <color name="primary_light">#c5cae9</color>
-  <color name="accent">#FF4081</color>
-  <color name="primary_text">#212121</color>
-  <color name="secondary_text">#757575</color>
-  <color name="icons">#FFFFFF</color>
-  <color name="divider">#BDBDBD</color>
-  <color name="splash">#4B5AA7</color>
-  <color name="fondoWidget">#6e000000</color>
-  <color name="firebase_color">#FFCB2B</color>
+    <!--Con tonos petroleo-->
+    <color name="primary">#3F51B5</color>
+    <color name="primary_dark">#303F9F</color>
+    <color name="primary_light">#c5cae9</color>
+    <color name="accent">#FF4081</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#BDBDBD</color>
+    <color name="splash">#4B5AA7</color>
+    <color name="fondoWidget">#6e000000</color>
+    <color name="firebase_color">#FFCB2B</color>
 </resources>
